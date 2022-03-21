@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dobest.funds.mapper.OperateFundsMapper">
+
+
+    <update id="updateMyFunds">
+        update my_funds a LEFT JOIN funds_info b on a.funds_id = b.funds_id
+        set a.earnings_percent = cast((b.price-a.price_buying)/a.price_buying*100 as decimal(10,2))
+        where b.data_date = #{yesterday}
+    </update>
+</mapper>

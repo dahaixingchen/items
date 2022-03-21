@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dobest.funds.mapper.FundsMapper">
+
+
+
+    <insert id="insertData">
+        REPLACE into funds_info(
+         funds_id
+        ,name
+        ,type
+        ,BFUNDTYPE
+        ,FEATURE
+        ,price
+        ,HLDWJZ
+        ,price_all
+        ,FTYI
+        ,TEYI
+        ,TFYI
+        ,price_daily_percent
+        ,price_weekly_percent
+        ,price_monthly_percent
+        ,price_3month_percent
+        ,price_6month_percent
+        ,price_year_percent
+        ,price_2year_percent
+        ,price_3year_percent
+        ,price_5year_percent
+        ,price_current_year_percent
+        ,price_all_percent
+        ,ZJL
+        ,TARGETYIELD
+        ,CYCLE
+        ,KFR
+        ,LEVERAGE
+        ,BAGTYPE
+        ,BUY
+        ,LISTTEXCH
+        ,NEWTEXCH
+        ,ISLISTTRADE
+        ,common_earnings_1year
+        ,common_earnings_2year
+        ,common_earnings_3year
+        ,common_earnings_5year
+        ,smart_earnings_1year
+        ,smart_earnings_2year
+        ,smart_earnings_3year
+        ,smart_earnings_5year
+        ,target_earnings_1year
+        ,target_earnings_2year
+        ,target_earnings_3year
+        ,target_earnings_5year
+        ,move_earnings_1year
+        ,move_earnings_2year
+        ,move_earnings_3year
+        ,move_earnings_5year
+        ,total_assets
+        ,SALEVOLUME
+        ,PV_Y
+        ,DTCOUNT_Y
+        ,ORGSALESRANK
+        ,ISABNORMAL
+        ,data_date
+        ,update_time
+        )
+        values
+            (
+            #{fundsId},
+            #{name},
+            #{type},
+            #{BFUNDTYPE},
+            #{FEATURE},
+            #{price},
+            #{HLDWJZ},
+            #{priceAll},
+            #{FTYI},
+            #{TEYI},
+            #{TFYI},
+            #{priceDailyPercent},
+            #{priceWeeklyPercent},
+            #{priceMonthlyPercent},
+            #{price3MonthlyPercent},
+            #{price6MonthlyPercent},
+            #{priceYearPercent},
+            #{price2YearPercent},
+            #{price3year_percent},
+            #{price5yearPercent},
+            #{priceCurrentYearPercent},
+            #{priceAllPercent},
+            #{ZJL},
+            #{TARGETYIELD},
+            #{CYCLE},
+            #{KFR},
+            #{LEVERAGE},
+            #{BAGTYPE},
+            #{BUY},
+            #{LISTTEXCH},
+            #{NEWTEXCH},
+            #{ISLISTTRADE},
+            #{commonEarnings1year},
+            #{commonEarnings2year},
+            #{commonEarnings3year},
+            #{commonEarnings5year},
+            #{smartEarnings1year},
+            #{smartEarnings2year},
+            #{smartEarnings3year},
+            #{smartEarnings5year},
+            #{targetEarnings1year},
+            #{targetEarnings2year},
+            #{targetEarnings3year},
+            #{targetEarnings5year},
+            #{moveEarnings1year},
+            #{moveEarnings2year},
+            #{moveEarnings3year},
+            #{moveEarnings5year},
+            #{totalAssets},
+            #{SALEVOLUME},
+            #{PV_Y},
+            #{DTCOUNT_Y},
+            #{ORGSALESRANK},
+            #{ISABNORMAL},
+            #{dataDate},
+            #{updateTime}
+            )
+    </insert>
+    <insert id="insertIndustry">
+        REPLACE into industry( funds_id, NAME, price, price_percent, data_date )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            ( #{item.fundsId},#{item.name},#{item.price},#{item.pricePercent},#{item.dataDate})
+        </foreach>
+    </insert>
+    <insert id="insertStockHoldings">
+        REPLACE into stock_holdings( funds_id,stock_id, NAME, holdings_percent
+        , holdings_old_percent,TEXCH,ISINVISBL,PCTNVCHGTYPE,NEWTEXCH,INDEXCODE,industry
+        , data_date )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            ( #{item.fundsId},#{item.stockId},#{item.name},#{item.holdingsPercent}
+            ,#{item.holdingsOldPercent},#{item.TEXCH},#{item.ISINVISBL}
+            ,#{item.PCTNVCHGTYPE},#{item.NEWTEXCH},#{item.INDEXCODE},#{item.industry},#{item.dataDate})
+        </foreach>
+    </insert>
+    <insert id="insertForecast">
+        REPLACE into forecast(
+        funds_id,name,forecast_price,forecast_percent,ISBUY,LISTTEXCH,ISLISTTRADE,data_date
+        )values
+        <foreach collection="list" item="item" index="index" separator=",">
+        (
+        #{item.fundsId},#{item.name},#{item.forecastPrice},#{item.forecastPercent}
+        ,#{item.ISBUY},#{item.LISTTEXCH},#{item.ISLISTTRADE},#{item.dataDate}
+        )
+        </foreach>
+    </insert>
+    <insert id="insertFundsHistory">
+        REPLACE into funds_history(
+        funds_id,name,price,price_all,price_daily_percent
+        ,price_up_down,NAVTYPE,RATE,MUI,SYI,data_date
+        )values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.fundsId},#{item.name},#{item.price},#{item.priceAll},#{item.priceDailyPercent}
+            ,#{item.priceUpDown},#{item.NAVTYPE},#{item.RATE},#{item.MUI},#{item.SYI},#{item.dataDate}
+            )
+        </foreach>
+    </insert>
+    <insert id="insertOneFundsHistory">
+        REPLACE into funds_history(
+        funds_id,name,price,price_all,price_daily_percent
+        ,price_up_down,NAVTYPE,RATE,MUI,SYI,data_date
+        )values
+        (
+        #{fundsId},#{name},#{price},#{priceAll},#{priceDailyPercent}
+        ,#{priceUpDown},#{NAVTYPE},#{RATE},#{MUI},#{SYI},#{dataDate}
+        )
+    </insert>
+    <insert id="insertIndustryLayout">
+        REPLACE into industry_layout(
+        industry_code,industry_name,price_daily_percent,price_weekly_percent
+        ,price_monthly_percent,price_3month_percent,price_year_percent
+        ,price_current_year_percent,industry_price,industry_3min_speed
+        ,industry_5min_speed,industry_fund_weekly,industry_fund_daily
+        ,TYPE,LZTS,LDTS,JLCTS,IndexCode,JLRTS,funds_price_weekly_percent
+        ,funds_price_monthly_percent,funds_price_3month_percent,funds_price_year_percent
+        ,funds_price_current_year_percent,funds_id,funds_name,similarity,data_date
+        )values
+        (
+        #{industryCode},#{industryName},#{priceDailyPercent},#{priceWeeklyPercent}
+        ,#{priceMonthlyPercent},#{price3monthPercent},#{priceYearPercent}
+        ,#{priceCurrentYearPercent},#{industryPrice},#{industry3minSpeed}
+        ,#{industry5minSpeed},#{industryFundWeekly},#{industryFundDaily}
+
+
+        ,#{TYPE},#{LZTS},#{LDTS},#{JLCTS},#{IndexCode},#{JLRTS},#{fundsPriceWeeklyPercent}
+        ,#{fundsPriceMonthlyPercent},#{fundsPrice3monthPercent},#{fundsPriceYearPercent}
+        ,#{fundsPriceCurrentYearPercent},#{fundsId},#{fundsName},#{similarity},#{dataDate}
+        )
+    </insert>
+    <insert id="insertOneFundsHistory20210801">
+        REPLACE into funds_history_20210801(
+        funds_id,name,price,price_all,price_daily_percent
+        ,price_up_down,NAVTYPE,RATE,MUI,SYI,data_date
+        )values
+        (
+        #{fundsId},#{name},#{price},#{priceAll},#{priceDailyPercent}
+        ,#{priceUpDown},#{NAVTYPE},#{RATE},#{MUI},#{SYI},#{dataDate}
+        )
+    </insert>
+    <select id="queryFundsIds" resultType="com.dobest.funds.entity.FundsInfoEntity">
+
+        select *
+        from funds_info
+        GROUP BY funds_id
+    </select>
+
+
+</mapper>
