@@ -38,6 +38,8 @@ public class FundsInfoSchedule {
         System.out.println(body);
 
         JSONArray datas = body.getJSONArray("Datas");
+
+        //i是基金的页数
         for (int i = 0; (i < 10000 && datas.length()!=0); i++) {
             datas.forEach(data->{
                 String jsonStr = data.toString();
@@ -46,6 +48,7 @@ public class FundsInfoSchedule {
 
                 fundsService.insertData(jsonObject);
             });
+            log.info("爬到的数据，data:{}",datas);
             response = Unirest.post("https://fundmobapi.eastmoney.com/FundMNewApi/FundMNRank")
                     .header("Content-Type", "application/x-www-form-urlencoded")
                     .header("Host", "fundmobapi.eastmoney.com")
